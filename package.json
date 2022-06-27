@@ -15,7 +15,9 @@
   ],
   "dependencies": {
     "dotenv": "^16.0.1",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^2.6.7"
   },
   "repository": {
     "type": "git",

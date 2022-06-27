@@ -1,3 +1,8 @@
+// Configure the environment so environment variables are available
+// Do this as early as possible!
+const dotenv = require('dotenv');
+dotenv.config();
+
 const express = require("express");
 const path = require("path");
 const cluster = require("cluster");
@@ -23,6 +28,12 @@ if (!isDev && cluster.isMaster) {
 } else {
   const app = express();
 
+  // Allow frontend to query the API on a different port
+  app.use((req, res, next) => {
+    res.append('Access-Control-Allow-Origin', '*');
+    next();
+  });
+
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, "../react-ui/build")));
 
@@ -31,6 +42,10 @@ if (!isDev && cluster.isMaster) {
     res.set("Content-Type", "application/json");
     res.send('{"message":"Hello from the custom server!"}');
   });
+
+  // Add middleware for the API controllers
+  app.use('/api/nba', require('./controllers/nba'));
+  app.use('/api/weather', require('./controllers/weather'));
 
   // All remaining requests return the React app, so it can handle routing.
   app.get("*", (request, response) => {

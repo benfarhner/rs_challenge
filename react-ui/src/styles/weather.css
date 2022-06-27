@@ -1,0 +1,9 @@
+.weather-card {
+  display: flex;
+  flex-direction: row;
+}
+
+.weather-card > img {
+  object-fit: contain;
+  padding-right: 16px;
+}
